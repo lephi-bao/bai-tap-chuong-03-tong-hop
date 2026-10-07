@@ -2,24 +2,6 @@
 
 # Sổ điểm lớp học
 
-## Giới thiệu
-
-Ứng dụng quản lý sổ điểm sinh viên được xây dựng bằng Flask.
-
-Các chức năng chính:
-
-- Xem danh sách sinh viên
-- Lọc sinh viên theo lớp
-- Xem chi tiết sinh viên
-- Chuyển hướng URL cũ
-- Xuất bảng điểm CSV
-- Tìm kiếm sinh viên
-- REST API danh sách sinh viên
-- REST API xem, thêm, sửa và xóa điểm
-- Xử lý lỗi 400, 404, 405
-
----
-
 ## 1.Kết quả flask --app sodiem routes
 
 Endpoint Methods Rule
