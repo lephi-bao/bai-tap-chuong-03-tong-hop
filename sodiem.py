@@ -373,6 +373,16 @@ def api_students():
 
     return jsonify(results)
 
+@app.route("/api/students/<mssv>")
+def api_student_detail(mssv):
+    if mssv not in STUDENTS:
+        abort(
+            404,
+            description=f"Không có sinh viên với MSSV = {mssv}."
+        )
+
+    return jsonify(student_summary(mssv))
+
 @app.route(
     "/api/students/<mssv>/scores/<course>",
     methods=["GET", "PUT", "DELETE"]
@@ -453,6 +463,47 @@ def api_student_score(mssv, course):
         del student["scores"][course_upper]
 
         return "", 204
+
+@app.errorhandler(400)
+@app.errorhandler(404)
+@app.errorhandler(405)
+def handle_error(error):
+    titles = {
+        400: "Dữ liệu không hợp lệ",
+        404: "Không tìm thấy",
+        405: "Phương thức không được hỗ trợ"
+    }
+
+    title = titles.get(
+        error.code,
+        "Lỗi"
+    )
+
+    if request.path.startswith("/api/"):
+        response = jsonify({
+            "error": title,
+            "detail": error.description
+        })
+
+        response.status_code = error.code
+
+        return response
+
+    body = f"""
+    <p>
+        <strong>Mã lỗi:</strong> {error.code}
+    </p>
+
+    <p>
+        <strong>Tiêu đề:</strong> {escape(title)}
+    </p>
+
+    <p>
+        {escape(error.description)}
+    </p>
+    """
+
+    return layout(title, body), error.code
 
 if __name__ == "__main__":
     app.run(debug=True)
