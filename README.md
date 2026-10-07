@@ -54,17 +54,17 @@ MMT,9.0
 curl.exe "http://127.0.0.1:8000/api/students?lop=k47a&min_avg=7"  
 [{
 "average": 8.17,
- "lop": "K47A",
- "mssv": "23T1020001",
- "name": "Nguyễn Văn An",
- "rank": "Khá",
- "scores": {
- "CSDL": 7.0,
- "MMT": 9.0,
- "PMMNM": 8.5
- }
- }
- ]
+"lop": "K47A",
+"mssv": "23T1020001",
+"name": "Nguyễn Văn An",
+"rank": "Khá",
+"scores": {
+"CSDL": 7.0,
+"MMT": 9.0,
+"PMMNM": 8.5
+}
+}
+]
 
 curl.exe -i "http://127.0.0.1:8000/api/students?min_avg=abc"  
 HTTP/1.1 400 BAD REQUEST  
@@ -117,3 +117,13 @@ HTTP/1.1 405 METHOD NOT ALLOWED
 
 curl.exe -i -X POST "http://127.0.0.1:8000/students"  
 HTTP/1.1 405 METHOD NOT ALLOWED
+
+## 3. Trả lời câu hỏi
+
+### 1. Vì sao Câu 4 dùng 301 còn Câu 8 trả 201 kèmLocation ?
+
+- Câu 4 dùng `301` vì đây là chuyển hướng vĩnh viễn từ URL cũ `/sv/<mssv>` sang URL mới `/students/<mssv>`. Câu 8 trả `201 Created` vì điểm mới được tạo thành công; `Location` cho biết URL của tài nguyên điểm vừa được tạo.
+
+### 2. Thêm điểm cho 23T1020005 rồi khởi động lại server, điểm đó còn không? Vì sao?
+
+- Không. Điểm sẽ mất sau khi khởi động lại server vì dữ liệu `STUDENTS` chỉ được lưu trong bộ nhớ RAM khi chương trình đang chạy, không được lưu vào cơ sở dữ liệu hoặc file.
